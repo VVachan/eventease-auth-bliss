@@ -43,6 +43,90 @@ export type Database = {
           },
         ]
       }
+      event_vendors: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          notes: string | null
+          vendor_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          notes?: string | null
+          vendor_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          notes?: string | null
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_vendors_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_vendors_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_venues: {
+        Row: {
+          booking_end: string | null
+          booking_start: string | null
+          created_at: string
+          event_id: string
+          id: string
+          notes: string | null
+          venue_id: string
+        }
+        Insert: {
+          booking_end?: string | null
+          booking_start?: string | null
+          created_at?: string
+          event_id: string
+          id?: string
+          notes?: string | null
+          venue_id: string
+        }
+        Update: {
+          booking_end?: string | null
+          booking_start?: string | null
+          created_at?: string
+          event_id?: string
+          id?: string
+          notes?: string | null
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_venues_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_venues_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           budget: number | null
@@ -88,6 +172,39 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          link: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message: string
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -115,6 +232,99 @@ export type Database = {
         }
         Relationships: []
       }
+      vendors: {
+        Row: {
+          created_at: string
+          creator_id: string
+          description: string | null
+          email: string | null
+          id: string
+          image_url: string | null
+          name: string
+          phone: string | null
+          price_range: string | null
+          rating: number | null
+          type: Database["public"]["Enums"]["vendor_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          phone?: string | null
+          price_range?: string | null
+          rating?: number | null
+          type: Database["public"]["Enums"]["vendor_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          phone?: string | null
+          price_range?: string | null
+          rating?: number | null
+          type?: Database["public"]["Enums"]["vendor_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      venues: {
+        Row: {
+          address: string
+          amenities: string[] | null
+          capacity: number
+          city: string
+          created_at: string
+          creator_id: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_available: boolean
+          name: string
+          price_per_hour: number | null
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          amenities?: string[] | null
+          capacity: number
+          city: string
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          name: string
+          price_per_hour?: number | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          amenities?: string[] | null
+          capacity?: number
+          city?: string
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          name?: string
+          price_per_hour?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -123,7 +333,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      vendor_type:
+        | "caterer"
+        | "decorator"
+        | "photographer"
+        | "musician"
+        | "florist"
+        | "planner"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -250,6 +467,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      vendor_type: [
+        "caterer",
+        "decorator",
+        "photographer",
+        "musician",
+        "florist",
+        "planner",
+        "other",
+      ],
+    },
   },
 } as const
