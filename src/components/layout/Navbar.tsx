@@ -62,7 +62,7 @@ export const Navbar = ({ user }: NavbarProps) => {
   };
 
   return (
-    <header className="h-16 border-b border-[hsl(45,90%,55%)]/30 bg-[hsl(45,90%,55%)]/20 backdrop-blur-xl flex items-center justify-between px-4 lg:px-6">
+    <header className="h-16 border-b border-white/10 bg-white/10 backdrop-blur-xl flex items-center justify-between px-4 lg:px-6">
       <div className="flex items-center gap-4">
         <SidebarTrigger />
         <Logo size="md" />
@@ -72,7 +72,7 @@ export const Navbar = ({ user }: NavbarProps) => {
         {/* Language Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2 text-foreground/70 hover:text-foreground hover:bg-accent/20">
+            <Button variant="ghost" size="sm" className="gap-2 text-foreground/70 hover:text-foreground hover:bg-white/10">
               <Globe className="w-4 h-4" />
               <span className="hidden sm:inline">{languageInfo.nativeName}</span>
               <ChevronDown className="w-3 h-3" />
@@ -100,9 +100,9 @@ export const Navbar = ({ user }: NavbarProps) => {
         {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2 pl-2 hover:bg-accent/20">
-              <Avatar className="w-9 h-9 bg-accent/30 border border-accent/50">
-                <AvatarFallback className="bg-transparent text-accent text-sm font-bold">
+            <Button variant="ghost" size="sm" className="gap-2 pl-2 hover:bg-white/10">
+              <Avatar className="w-9 h-9 bg-primary/30 border border-primary/50">
+                <AvatarFallback className="bg-transparent text-primary text-sm font-bold">
                   {initials}
                 </AvatarFallback>
               </Avatar>
