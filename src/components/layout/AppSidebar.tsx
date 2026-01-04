@@ -9,12 +9,14 @@ import {
   Bell,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/Logo";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -50,14 +52,26 @@ const otherMenuItems: { titleKey: TranslationKey; url: string; icon: any }[] = [
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
-  const collapsed = state === "collapsed";
+  const { setOpen, setOpenMobile, isMobile } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleClose = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    } else {
+      setOpen(false);
+    }
+  };
+
+  const handleNavigate = (url: string) => {
+    navigate(url);
+    handleClose();
+  };
 
   const handleSignOut = async () => {
     try {
@@ -78,44 +92,42 @@ export function AppSidebar() {
 
   const MenuItem = ({ item }: { item: { titleKey: TranslationKey; url: string; icon: any } }) => (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        asChild
-        isActive={isActive(item.url)}
-        tooltip={collapsed ? t(item.titleKey) : undefined}
-      >
+      <SidebarMenuButton asChild isActive={isActive(item.url)}>
         <button
-          onClick={() => navigate(item.url)}
+          onClick={() => handleNavigate(item.url)}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
             isActive(item.url)
               ? "bg-primary text-primary-foreground shadow-soft"
               : "hover:bg-secondary text-foreground"
           )}
         >
           <item.icon className="w-5 h-5 shrink-0" />
-          {!collapsed && <span className="font-medium">{t(item.titleKey)}</span>}
+          <span className="font-medium">{t(item.titleKey)}</span>
         </button>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border">
-      <SidebarHeader className="p-4">
-        <div className={cn("transition-all duration-200", collapsed && "flex justify-center")}>
-          {collapsed ? (
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <CalendarDays className="w-5 h-5 text-primary" />
-            </div>
-          ) : (
-            <Logo size="md" />
-          )}
-        </div>
+    <Sidebar collapsible="offcanvas" className="border-r border-border bg-sidebar">
+      <SidebarHeader className="p-4 flex flex-row items-center justify-between">
+        <Logo size="md" />
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleClose}
+          className="h-8 w-8 text-muted-foreground hover:text-foreground"
+        >
+          <X className="w-5 h-5" />
+        </Button>
       </SidebarHeader>
 
       <SidebarContent className="px-3">
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("main")}</SidebarGroupLabel>}
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            {t("main")}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainMenuItems.map((item) => (
@@ -126,7 +138,9 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className="mt-6">
-          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("manage")}</SidebarGroupLabel>}
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            {t("manage")}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {manageMenuItems.map((item) => (
@@ -137,7 +151,9 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className="mt-6">
-          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("other")}</SidebarGroupLabel>}
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            {t("other")}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {otherMenuItems.map((item) => (
@@ -152,12 +168,11 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              tooltip={collapsed ? t("logout") : undefined}
               onClick={handleSignOut}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-destructive hover:bg-destructive/10 transition-all duration-200"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-destructive hover:bg-destructive/10 transition-all duration-200"
             >
               <LogOut className="w-5 h-5 shrink-0" />
-              {!collapsed && <span className="font-medium">{t("logout")}</span>}
+              <span className="font-medium">{t("logout")}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
