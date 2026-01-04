@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Users, DollarSign, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Users, IndianRupee, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -73,8 +73,8 @@ export const EventCard = ({
             </div>
             {event.budget && (
               <div className="flex items-center gap-1 text-muted-foreground">
-                <DollarSign className="w-4 h-4 shrink-0" />
-                <span>{event.budget.toLocaleString()}</span>
+                <IndianRupee className="w-4 h-4 shrink-0" />
+                <span>₹{event.budget.toLocaleString('en-IN')}</span>
               </div>
             )}
           </div>
