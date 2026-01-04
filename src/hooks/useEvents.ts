@@ -5,15 +5,14 @@ import type { User } from "@supabase/supabase-js";
 
 export interface Event {
   id: string;
-  creator_id: string;
-  name: string;
-  type: string;
+  user_id: string;
+  title: string;
   description: string | null;
-  event_date: string;
+  date: string;
   location: string;
-  budget: number | null;
-  max_attendees: number | null;
+  capacity: number | null;
   image_url: string | null;
+  status: string;
   created_at: string;
   updated_at: string;
   registration_count?: number;
@@ -49,13 +48,13 @@ export const useEvents = (user: User | null) => {
       const { data: eventsData, error: eventsError } = await supabase
         .from("events")
         .select("*")
-        .order("event_date", { ascending: true });
+        .order("date", { ascending: true });
 
       if (eventsError) throw eventsError;
 
       // Fetch registration counts
       const { data: registrations, error: regError } = await supabase
-        .from("event_registrations")
+        .from("registrations")
         .select("event_id, user_id");
 
       if (regError) throw regError;
@@ -71,7 +70,7 @@ export const useEvents = (user: User | null) => {
       });
 
       setEvents(processedEvents);
-      setMyEvents(processedEvents.filter((e) => e.creator_id === user.id));
+      setMyEvents(processedEvents.filter((e) => e.user_id === user.id));
       setRegisteredEvents(processedEvents.filter((e) => e.is_registered));
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to fetch events";
@@ -89,8 +88,13 @@ export const useEvents = (user: User | null) => {
       const { data: newEvent, error } = await supabase
         .from("events")
         .insert({
-          ...data,
-          creator_id: user.id,
+          title: data.name,
+          description: data.description,
+          date: data.event_date,
+          location: data.location,
+          capacity: data.max_attendees,
+          user_id: user.id,
+          status: "draft",
         })
         .select()
         .single();
