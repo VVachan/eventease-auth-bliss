@@ -1,23 +1,28 @@
-import { PlusCircle } from "lucide-react";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { CreateEventForm } from "@/components/events/CreateEventForm";
+import { useEvents } from "@/hooks/useEvents";
+import type { User } from "@supabase/supabase-js";
 
 const CreateEvent = () => {
+  const { user } = useOutletContext<{ user: User }>();
+  const navigate = useNavigate();
+  const { createEvent } = useEvents(user);
+
+  const handleSuccess = () => {
+    navigate("/browse-events");
+  };
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
       <div className="space-y-2">
         <h1 className="text-3xl font-display font-bold text-foreground">Create Event</h1>
         <p className="text-muted-foreground">
-          Create and manage your events with ease.
+          Fill in the details below to create your event.
         </p>
       </div>
 
-      <div className="bg-card border border-border rounded-xl p-12 shadow-soft text-center">
-        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-          <PlusCircle className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-xl font-semibold text-foreground mb-2">Event Creation Coming Soon</h2>
-        <p className="text-muted-foreground max-w-md mx-auto">
-          The event creation feature will be available in the next phase. Stay tuned!
-        </p>
+      <div className="rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl p-6 md:p-8">
+        <CreateEventForm onSubmit={createEvent} onSuccess={handleSuccess} />
       </div>
     </div>
   );
