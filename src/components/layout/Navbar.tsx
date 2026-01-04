@@ -64,10 +64,8 @@ export const Navbar = ({ user }: NavbarProps) => {
   return (
     <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-4 lg:px-6">
       <div className="flex items-center gap-4">
-        <SidebarTrigger className="lg:hidden" />
-        <div className="hidden lg:block">
-          <Logo size="md" />
-        </div>
+        <SidebarTrigger />
+        <Logo size="md" />
       </div>
 
       <div className="flex items-center gap-3">
