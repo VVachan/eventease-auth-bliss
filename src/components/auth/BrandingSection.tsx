@@ -11,14 +11,14 @@ const features = [
 export const BrandingSection = () => {
   return (
     <div className="relative h-full overflow-hidden">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(234,89%,15%)] via-[hsl(262,83%,20%)] to-[hsl(280,70%,15%)]" />
+      {/* Ocean gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(210,40%,12%)] via-[hsl(199,50%,18%)] to-[hsl(172,40%,15%)]" />
       
       {/* Animated orbs */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-accent/30 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-[hsl(280,70%,50%)]/20 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[hsl(199,89%,48%)]/15 rounded-full blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-[hsl(172,66%,50%)]/20 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-[hsl(199,89%,60%)]/10 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: "2s" }} />
       </div>
 
       {/* Grid pattern overlay */}
@@ -41,7 +41,7 @@ export const BrandingSection = () => {
         <div className="space-y-4 animate-slide-up max-w-md" style={{ animationDelay: "0.2s" }}>
           <h1 className="text-3xl lg:text-4xl xl:text-5xl font-display font-bold leading-tight text-primary-foreground">
             Create
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[hsl(30,90%,60%)]"> unforgettable </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(199,89%,55%)] to-[hsl(172,66%,55%)]"> unforgettable </span>
             experiences
           </h1>
           
