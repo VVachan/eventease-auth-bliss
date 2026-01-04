@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Globe, User, LogOut, Settings, Check } from "lucide-react";
@@ -9,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -104,9 +103,8 @@ export const Navbar = ({ user }: NavbarProps) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2 pl-2">
-              <Avatar className="w-9 h-9 border-2 border-primary/20">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" alt={displayName} />
-                <AvatarFallback className="bg-primary text-primary-foreground text-xs font-medium">
+              <Avatar className="w-9 h-9 bg-gradient-to-br from-primary to-accent">
+                <AvatarFallback className="bg-transparent text-primary-foreground text-sm font-bold">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -116,9 +114,8 @@ export const Navbar = ({ user }: NavbarProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-card border-border z-50">
             <div className="px-3 py-3 flex items-center gap-3">
-              <Avatar className="w-10 h-10">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" alt={displayName} />
-                <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+              <Avatar className="w-11 h-11 bg-gradient-to-br from-primary to-accent">
+                <AvatarFallback className="bg-transparent text-primary-foreground text-base font-bold">
                   {initials}
                 </AvatarFallback>
               </Avatar>
