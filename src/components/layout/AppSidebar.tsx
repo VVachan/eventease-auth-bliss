@@ -110,7 +110,7 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-r border-border bg-sidebar">
+    <Sidebar collapsible="offcanvas" className="border-r border-[hsl(45,90%,55%)]/30 bg-[hsl(45,90%,55%)]/15 backdrop-blur-xl">
       <SidebarHeader className="p-4 flex flex-row items-center justify-between">
         <Logo size="md" />
         <Button
@@ -164,7 +164,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-3 border-t border-border">
+      <SidebarFooter className="p-3 border-t border-[hsl(45,90%,55%)]/30">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
