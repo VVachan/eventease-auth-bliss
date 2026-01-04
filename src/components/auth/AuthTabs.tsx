@@ -7,14 +7,22 @@ interface AuthTabsProps {
 
 export const AuthTabs = ({ activeTab, onTabChange }: AuthTabsProps) => {
   return (
-    <div className="flex gap-1 p-1 bg-secondary rounded-lg mb-8">
+    <div className="relative flex gap-1 p-1.5 bg-secondary/80 rounded-xl mb-8 backdrop-blur-sm">
+      {/* Animated background pill */}
+      <div 
+        className={cn(
+          "absolute top-1.5 h-[calc(100%-12px)] w-[calc(50%-6px)] bg-card rounded-lg shadow-soft transition-all duration-300 ease-out",
+          activeTab === "signup" ? "left-[calc(50%+2px)]" : "left-1.5"
+        )}
+      />
+      
       <button
         onClick={() => onTabChange("login")}
         className={cn(
-          "flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200",
+          "relative z-10 flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-colors duration-200",
           activeTab === "login"
-            ? "bg-card text-foreground shadow-soft"
-            : "text-muted-foreground hover:text-foreground"
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground/80"
         )}
       >
         Sign In
@@ -22,10 +30,10 @@ export const AuthTabs = ({ activeTab, onTabChange }: AuthTabsProps) => {
       <button
         onClick={() => onTabChange("signup")}
         className={cn(
-          "flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200",
+          "relative z-10 flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-colors duration-200",
           activeTab === "signup"
-            ? "bg-card text-foreground shadow-soft"
-            : "text-muted-foreground hover:text-foreground"
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground/80"
         )}
       >
         Sign Up

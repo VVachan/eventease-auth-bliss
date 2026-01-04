@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -87,14 +87,18 @@ export const LoginForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-sm font-medium">Email address</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="you@example.com" 
-                  type="email"
-                  autoComplete="email"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="you@example.com" 
+                    type="email"
+                    autoComplete="email"
+                    className="pl-12 h-12"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,19 +110,21 @@ export const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="text-sm font-medium">Password</FormLabel>
               <FormControl>
                 <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     placeholder="Enter your password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
+                    className="pl-12 pr-12 h-12"
                     {...field}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -139,6 +145,7 @@ export const LoginForm = () => {
                   id="rememberMe"
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="border-muted-foreground/50"
                 />
                 <Label
                   htmlFor="rememberMe"
@@ -151,7 +158,7 @@ export const LoginForm = () => {
           />
           <button
             type="button"
-            className="text-sm text-primary hover:underline font-medium"
+            className="text-sm text-primary font-medium hover:underline underline-offset-4"
           >
             Forgot password?
           </button>
@@ -159,13 +166,13 @@ export const LoginForm = () => {
 
         <Button
           type="submit"
-          className="w-full"
+          className="w-full h-12 text-base font-semibold"
           size="lg"
           disabled={isLoading}
         >
           {isLoading ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" />
               Signing in...
             </>
           ) : (
