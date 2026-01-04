@@ -12,7 +12,6 @@ const Auth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session?.user) {
@@ -21,7 +20,6 @@ const Auth = () => {
       }
     );
 
-    // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         navigate("/", { replace: true });
@@ -32,47 +30,72 @@ const Auth = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-background">
       {/* Left side - Branding */}
-      <div className="hidden lg:block lg:w-1/2 xl:w-[55%]">
-        <BrandingSection />
+      <div className="hidden lg:block lg:w-[55%] xl:w-[60%]">
+        <div className="h-screen sticky top-0">
+          <BrandingSection />
+        </div>
       </div>
 
       {/* Right side - Auth forms */}
-      <div className="w-full lg:w-1/2 xl:w-[45%] flex flex-col">
-        {/* Mobile header */}
-        <div className="lg:hidden p-6 border-b border-border">
-          <Logo size="md" />
+      <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col min-h-screen">
+        {/* Mobile header with gradient background */}
+        <div className="lg:hidden relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(234,89%,15%)] via-[hsl(262,83%,20%)] to-[hsl(280,70%,15%)]" />
+          <div className="absolute inset-0">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-accent/20 rounded-full blur-[60px]" />
+          </div>
+          <div className="relative z-10 p-6 pb-8">
+            <Logo size="md" variant="light" />
+            <h2 className="mt-6 text-2xl font-display font-bold text-primary-foreground">
+              Create unforgettable experiences
+            </h2>
+            <p className="mt-2 text-sm text-primary-foreground/70">
+              The all-in-one event management platform
+            </p>
+          </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-12">
-          <div className="w-full max-w-md animate-slide-up">
-            <div className="text-center mb-8">
+        {/* Form section */}
+        <div className="flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-12 xl:p-16">
+          <div className="w-full max-w-[420px]">
+            {/* Header */}
+            <div className="text-center lg:text-left mb-8 animate-fade-in">
               <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground">
                 {activeTab === "login" ? "Welcome back" : "Get started"}
               </h2>
               <p className="mt-2 text-muted-foreground">
                 {activeTab === "login"
                   ? "Sign in to continue to EventEase"
-                  : "Create your EventEase account"}
+                  : "Create your free account today"}
               </p>
             </div>
 
-            <AuthTabs activeTab={activeTab} onTabChange={setActiveTab} />
+            {/* Tabs */}
+            <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              <AuthTabs activeTab={activeTab} onTabChange={setActiveTab} />
+            </div>
 
-            <div className="animate-fade-in" key={activeTab}>
+            {/* Form */}
+            <div 
+              className="animate-fade-in" 
+              key={activeTab}
+              style={{ animationDelay: "0.15s" }}
+            >
               {activeTab === "login" ? <LoginForm /> : <SignupForm />}
             </div>
 
-            <p className="mt-8 text-center text-sm text-muted-foreground">
+            {/* Switch prompt */}
+            <p className="mt-8 text-center text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: "0.2s" }}>
               {activeTab === "login" ? (
                 <>
                   Don't have an account?{" "}
                   <button
                     onClick={() => setActiveTab("signup")}
-                    className="text-primary font-medium hover:underline"
+                    className="text-primary font-semibold hover:underline underline-offset-4 transition-all"
                   >
-                    Sign up
+                    Sign up for free
                   </button>
                 </>
               ) : (
@@ -80,19 +103,27 @@ const Auth = () => {
                   Already have an account?{" "}
                   <button
                     onClick={() => setActiveTab("login")}
-                    className="text-primary font-medium hover:underline"
+                    className="text-primary font-semibold hover:underline underline-offset-4 transition-all"
                   >
                     Sign in
                   </button>
                 </>
               )}
             </p>
+
+            {/* Terms */}
+            <p className="mt-8 text-center text-xs text-muted-foreground/60 animate-fade-in" style={{ animationDelay: "0.25s" }}>
+              By continuing, you agree to EventEase's{" "}
+              <button className="underline hover:text-muted-foreground transition-colors">Terms of Service</button>
+              {" "}and{" "}
+              <button className="underline hover:text-muted-foreground transition-colors">Privacy Policy</button>
+            </p>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="p-6 text-center text-sm text-muted-foreground border-t border-border">
-          © 2024 EventEase. All rights reserved.
+        {/* Footer - minimal */}
+        <div className="p-6 text-center text-xs text-muted-foreground/50">
+          © 2026 EventEase. All rights reserved.
         </div>
       </div>
     </div>

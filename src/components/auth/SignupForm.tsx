@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,7 +30,7 @@ const signupSchema = z
       .min(8, "Password must be at least 8 characters")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+        "Password must contain uppercase, lowercase, and number"
       ),
     confirmPassword: z.string(),
     agreeToTerms: z.boolean().refine((val) => val === true, {
@@ -116,13 +116,17 @@ export const SignupForm = () => {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel className="text-sm font-medium">Full name</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="John Doe" 
-                  autoComplete="name"
-                  {...field} 
-                />
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="John Doe" 
+                    autoComplete="name"
+                    className="pl-12 h-12"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -134,14 +138,18 @@ export const SignupForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-sm font-medium">Email address</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="you@example.com" 
-                  type="email"
-                  autoComplete="email"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="you@example.com" 
+                    type="email"
+                    autoComplete="email"
+                    className="pl-12 h-12"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -153,19 +161,21 @@ export const SignupForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="text-sm font-medium">Password</FormLabel>
               <FormControl>
                 <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     placeholder="Create a strong password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
+                    className="pl-12 pr-12 h-12"
                     {...field}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -181,19 +191,21 @@ export const SignupForm = () => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel className="text-sm font-medium">Confirm password</FormLabel>
               <FormControl>
                 <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     placeholder="Confirm your password"
                     type={showConfirmPassword ? "text" : "password"}
                     autoComplete="new-password"
+                    className="pl-12 pr-12 h-12"
                     {...field}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -209,23 +221,23 @@ export const SignupForm = () => {
           name="agreeToTerms"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-start space-x-2 pt-2">
+              <div className="flex items-start space-x-3 pt-2">
                 <Checkbox
                   id="agreeToTerms"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="mt-0.5"
+                  className="mt-0.5 border-muted-foreground/50"
                 />
                 <Label
                   htmlFor="agreeToTerms"
                   className="text-sm font-normal text-muted-foreground cursor-pointer leading-relaxed"
                 >
                   I agree to the{" "}
-                  <button type="button" className="text-primary hover:underline">
+                  <button type="button" className="text-primary font-medium hover:underline underline-offset-4">
                     Terms of Service
                   </button>{" "}
                   and{" "}
-                  <button type="button" className="text-primary hover:underline">
+                  <button type="button" className="text-primary font-medium hover:underline underline-offset-4">
                     Privacy Policy
                   </button>
                 </Label>
@@ -237,13 +249,13 @@ export const SignupForm = () => {
 
         <Button
           type="submit"
-          className="w-full"
+          className="w-full h-12 text-base font-semibold mt-2"
           size="lg"
           disabled={isLoading}
         >
           {isLoading ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" />
               Creating account...
             </>
           ) : (
