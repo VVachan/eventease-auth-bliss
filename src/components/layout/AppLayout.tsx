@@ -6,12 +6,14 @@ import { AppSidebar } from "./AppSidebar";
 import { Footer } from "./Footer";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Loader2 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { User } from "@supabase/supabase-js";
 
 export const AppLayout = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -50,10 +52,10 @@ export const AppLayout = () => {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={!isMobile}>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <div className="flex-1 flex flex-col min-h-screen">
+        <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
           <Navbar user={user} />
           <main className="flex-1 p-6 overflow-auto">
             <Outlet context={{ user }} />
