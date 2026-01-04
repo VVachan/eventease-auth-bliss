@@ -85,27 +85,33 @@ export const useEvents = (user: User | null) => {
     if (!user) return null;
 
     try {
+      console.log("Creating event with data:", { title: data.name, description: data.description, date: data.event_date, location: data.location, capacity: data.max_attendees, user_id: user.id });
+      
       const { data: newEvent, error } = await supabase
         .from("events")
         .insert({
           title: data.name,
-          description: data.description,
+          description: data.description || null,
           date: data.event_date,
           location: data.location,
-          capacity: data.max_attendees,
+          capacity: data.max_attendees || 100,
           user_id: user.id,
           status: "draft",
         })
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error creating event:", error);
+        throw error;
+      }
 
       toast({ title: "Success", description: "Event created successfully!" });
       await fetchEvents();
       return newEvent;
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to create event";
+      console.error("Create event error:", err);
       toast({ variant: "destructive", title: "Error", description: message });
       return null;
     }
@@ -116,7 +122,7 @@ export const useEvents = (user: User | null) => {
 
     try {
       const { error } = await supabase
-        .from("event_registrations")
+        .from("registrations")
         .insert({ event_id: eventId, user_id: user.id });
 
       if (error) throw error;
