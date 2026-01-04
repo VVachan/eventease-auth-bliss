@@ -1,11 +1,11 @@
 import { Logo } from "@/components/Logo";
-import { Calendar, Users, Sparkles, Zap, Star } from "lucide-react";
+import { Calendar, Users, Sparkles, Zap } from "lucide-react";
 
 const features = [
-  { icon: Calendar, text: "Seamless event scheduling" },
-  { icon: Users, text: "Team collaboration tools" },
-  { icon: Sparkles, text: "Smart recommendations" },
-  { icon: Zap, text: "Lightning-fast setup" },
+  { icon: Calendar, text: "Event scheduling" },
+  { icon: Users, text: "Team collaboration" },
+  { icon: Sparkles, text: "Smart tools" },
+  { icon: Zap, text: "Fast setup" },
 ];
 
 export const BrandingSection = () => {
@@ -30,69 +30,37 @@ export const BrandingSection = () => {
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-8 lg:p-12 xl:p-16">
+      {/* Content - Centered and minimal */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 lg:p-12 xl:p-16 text-center">
         {/* Logo */}
-        <div className="animate-fade-in">
+        <div className="animate-fade-in mb-8">
           <Logo size="lg" variant="light" />
         </div>
 
-        {/* Main content */}
-        <div className="space-y-10 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 backdrop-blur-sm">
-              <Star className="w-4 h-4 text-accent fill-accent" />
-              <span className="text-sm font-medium text-primary-foreground/90">Trusted by 50,000+ organizers</span>
-            </div>
-            
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-display font-bold leading-[1.1] text-primary-foreground">
-              Create
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-[hsl(30,90%,60%)] to-accent">
-                unforgettable
-              </span>
-              <br />
-              experiences
-            </h1>
-            
-            <p className="text-lg lg:text-xl text-primary-foreground/70 max-w-lg leading-relaxed">
-              The all-in-one platform to plan, manage, and execute extraordinary events that leave lasting impressions.
-            </p>
-          </div>
-
-          {/* Features */}
-          <div className="grid grid-cols-2 gap-4">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group flex items-center gap-3 p-4 rounded-xl bg-primary-foreground/5 border border-primary-foreground/10 backdrop-blur-sm hover:bg-primary-foreground/10 transition-all duration-300 cursor-default"
-                style={{ animationDelay: `${0.3 + index * 0.1}s` }}
-              >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <span className="text-sm font-medium text-primary-foreground/80">{feature.text}</span>
-              </div>
-            ))}
-          </div>
+        {/* Tagline */}
+        <div className="space-y-4 animate-slide-up max-w-md" style={{ animationDelay: "0.2s" }}>
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-display font-bold leading-tight text-primary-foreground">
+            Create
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[hsl(30,90%,60%)]"> unforgettable </span>
+            experiences
+          </h1>
+          
+          <p className="text-base text-primary-foreground/60">
+            Plan, manage, and execute extraordinary events.
+          </p>
         </div>
 
-        {/* Bottom stats */}
-        <div className="flex items-center gap-8 animate-fade-in" style={{ animationDelay: "0.6s" }}>
-          <div className="space-y-1">
-            <p className="text-2xl font-bold text-primary-foreground">1M+</p>
-            <p className="text-xs text-primary-foreground/50 uppercase tracking-wider">Events Created</p>
-          </div>
-          <div className="w-px h-10 bg-primary-foreground/20" />
-          <div className="space-y-1">
-            <p className="text-2xl font-bold text-primary-foreground">150+</p>
-            <p className="text-xs text-primary-foreground/50 uppercase tracking-wider">Countries</p>
-          </div>
-          <div className="w-px h-10 bg-primary-foreground/20" />
-          <div className="space-y-1">
-            <p className="text-2xl font-bold text-primary-foreground">99.9%</p>
-            <p className="text-xs text-primary-foreground/50 uppercase tracking-wider">Uptime</p>
-          </div>
+        {/* Mini features */}
+        <div className="flex items-center gap-6 mt-10 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 text-primary-foreground/50"
+            >
+              <feature.icon className="w-4 h-4" />
+              <span className="text-xs font-medium">{feature.text}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
