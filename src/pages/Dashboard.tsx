@@ -1,15 +1,47 @@
-import { CalendarDays, Plus, ArrowRight, Sparkles } from "lucide-react";
+import { CalendarDays, Plus, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+import { EventCard } from "@/components/events/EventCard";
+import { useEvents } from "@/hooks/useEvents";
 import type { User } from "@supabase/supabase-js";
 import heroImage from "@/assets/hero-event.jpg";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { user } = useOutletContext<{ user: User }>();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
+  const { myEvents, registeredEvents, loading, registerForEvent, unregisterFromEvent, deleteEvent } = useEvents(user);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  // Get upcoming events (next 3)
+  const upcomingMyEvents = myEvents
+    .filter((e) => new Date(e.event_date) >= new Date())
+    .slice(0, 3);
+  
+  const upcomingRegisteredEvents = registeredEvents
+    .filter((e) => new Date(e.event_date) >= new Date())
+    .slice(0, 3);
+
+  const handleRegister = async (eventId: string) => {
+    setActionLoading(true);
+    await registerForEvent(eventId);
+    setActionLoading(false);
+  };
+
+  const handleUnregister = async (eventId: string) => {
+    setActionLoading(true);
+    await unregisterFromEvent(eventId);
+    setActionLoading(false);
+  };
+
+  const handleDelete = async (eventId: string) => {
+    setActionLoading(true);
+    await deleteEvent(eventId);
+    setActionLoading(false);
+  };
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -60,44 +92,106 @@ const Dashboard = () => {
         </button>
 
         <button
-          onClick={() => navigate("/calendar")}
+          onClick={() => navigate("/registrations")}
           className="group p-6 rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl hover:bg-[hsl(270,65%,55%)]/20 hover:border-[hsl(270,65%,55%)]/50 transition-all duration-200 text-left sm:col-span-2 lg:col-span-1"
         >
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
             <ArrowRight className="w-6 h-6 text-foreground" />
           </div>
-          <h3 className="font-semibold text-foreground mb-1">{t("calendar")}</h3>
-          <p className="text-sm text-muted-foreground">View your schedule</p>
+          <h3 className="font-semibold text-foreground mb-1">{t("myRegistrations")}</h3>
+          <p className="text-sm text-muted-foreground">View your registrations</p>
         </button>
       </div>
 
-      {/* Empty State - My Events - Glassy Purple */}
-      <div className="rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl p-8">
-        <div className="flex flex-col items-center justify-center text-center py-8">
-          <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-            <CalendarDays className="w-8 h-8 text-primary" />
-          </div>
-          <h2 className="text-lg font-semibold text-foreground mb-2">No events yet</h2>
-          <p className="text-muted-foreground text-sm max-w-sm mb-6">
-            Create your first event or browse existing ones to get started.
-          </p>
-          <Button onClick={() => navigate("/create-event")} className="gap-2">
-            <Plus className="w-4 h-4" />
-            {t("createEvent")}
-          </Button>
+      {/* My Events Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-foreground">My Events</h2>
+          {myEvents.length > 0 && (
+            <Button variant="ghost" size="sm" onClick={() => navigate("/browse-events")}>
+              View All
+            </Button>
+          )}
         </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          </div>
+        ) : upcomingMyEvents.length === 0 ? (
+          <div className="rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl p-8">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                <CalendarDays className="w-7 h-7 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No events yet</h3>
+              <p className="text-muted-foreground text-sm max-w-sm mb-4">
+                Create your first event to get started.
+              </p>
+              <Button onClick={() => navigate("/create-event")} size="sm" className="gap-2">
+                <Plus className="w-4 h-4" />
+                {t("createEvent")}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {upcomingMyEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                currentUserId={user.id}
+                onRegister={handleRegister}
+                onUnregister={handleUnregister}
+                onDelete={handleDelete}
+                isLoading={actionLoading}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Info Section - Glassy Purple */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl p-6">
-          <h3 className="font-semibold text-foreground mb-3">{t("upcomingEvents")}</h3>
-          <p className="text-sm text-muted-foreground">No upcoming events scheduled.</p>
+      {/* Registered Events Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-foreground">{t("registeredEvents")}</h2>
+          {registeredEvents.length > 0 && (
+            <Button variant="ghost" size="sm" onClick={() => navigate("/registrations")}>
+              View All
+            </Button>
+          )}
         </div>
-        <div className="rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl p-6">
-          <h3 className="font-semibold text-foreground mb-3">{t("registeredEvents")}</h3>
-          <p className="text-sm text-muted-foreground">You haven't registered for any events.</p>
-        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          </div>
+        ) : upcomingRegisteredEvents.length === 0 ? (
+          <div className="rounded-xl border border-[hsl(270,65%,55%)]/30 bg-[hsl(270,65%,55%)]/10 backdrop-blur-xl p-6">
+            <p className="text-muted-foreground text-sm text-center">
+              You haven't registered for any events yet.{" "}
+              <button
+                onClick={() => navigate("/browse-events")}
+                className="text-primary hover:underline"
+              >
+                Browse events
+              </button>
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {upcomingRegisteredEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                currentUserId={user.id}
+                onRegister={handleRegister}
+                onUnregister={handleUnregister}
+                isLoading={actionLoading}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
