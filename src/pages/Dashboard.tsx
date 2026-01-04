@@ -1,10 +1,12 @@
 import { CalendarDays, CalendarCheck, Ticket, TrendingUp } from "lucide-react";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { useOutletContext } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 import type { User } from "@supabase/supabase-js";
 
 const Dashboard = () => {
   const { user } = useOutletContext<{ user: User }>();
+  const { t } = useLanguage();
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
 
   return (
@@ -12,40 +14,40 @@ const Dashboard = () => {
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-display font-bold text-foreground">
-          Welcome back, {displayName}! 👋
+          {t("welcomeBack")}, {displayName}! 👋
         </h1>
         <p className="text-muted-foreground">
-          Here's an overview of your events and activities.
+          {t("dashboardSubtitle")}
         </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          title="Total Events"
+          title={t("totalEvents")}
           value={12}
           icon={CalendarDays}
-          description="All your events"
+          description={t("allYourEvents")}
           variant="primary"
         />
         <StatCard
-          title="Upcoming Events"
+          title={t("upcomingEvents")}
           value={5}
           icon={CalendarCheck}
-          description="Next 30 days"
+          description={t("next30Days")}
           trend={{ value: 12, isPositive: true }}
         />
         <StatCard
-          title="Registered Events"
+          title={t("registeredEvents")}
           value={8}
           icon={Ticket}
-          description="Events you're attending"
+          description={t("eventsAttending")}
         />
         <StatCard
-          title="This Month"
+          title={t("thisMonth")}
           value={3}
           icon={TrendingUp}
-          description="Events created"
+          description={t("eventsCreated")}
           trend={{ value: 25, isPositive: true }}
         />
       </div>
@@ -53,7 +55,7 @@ const Dashboard = () => {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-card border border-border rounded-xl p-6 shadow-soft">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">{t("recentActivity")}</h2>
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-secondary/50">
@@ -61,8 +63,8 @@ const Dashboard = () => {
                   <CalendarDays className="w-5 h-5 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">Sample Event {i}</p>
-                  <p className="text-xs text-muted-foreground">Created 2 days ago</p>
+                  <p className="text-sm font-medium text-foreground">{t("sampleEvent")} {i}</p>
+                  <p className="text-xs text-muted-foreground">{t("createdDaysAgo")}</p>
                 </div>
               </div>
             ))}
@@ -70,7 +72,7 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-6 shadow-soft">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Upcoming Schedule</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">{t("upcomingSchedule")}</h2>
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-secondary/50">
@@ -79,7 +81,7 @@ const Dashboard = () => {
                   <p className="text-xl font-bold text-foreground">{10 + i}</p>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">Upcoming Event {i}</p>
+                  <p className="text-sm font-medium text-foreground">{t("upcomingEvent")} {i}</p>
                   <p className="text-xs text-muted-foreground">10:00 AM - 2:00 PM</p>
                 </div>
               </div>
