@@ -1,4 +1,4 @@
-import { Mail, Phone, DollarSign, Star, Trash2 } from "lucide-react";
+import { Mail, Phone, IndianRupee, Star, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -80,7 +80,7 @@ export const VendorCard = ({ vendor, currentUserId, onDelete, isLoading }: Vendo
           <div className="flex items-center gap-4">
             {vendor.price_range && (
               <div className="flex items-center gap-1 text-muted-foreground">
-                <DollarSign className="w-4 h-4 shrink-0" />
+                <IndianRupee className="w-4 h-4 shrink-0" />
                 <span>{vendor.price_range}</span>
               </div>
             )}
