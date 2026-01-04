@@ -62,7 +62,7 @@ export const Navbar = ({ user }: NavbarProps) => {
   };
 
   return (
-    <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-4 lg:px-6">
+    <header className="h-16 border-b border-accent/30 bg-accent flex items-center justify-between px-4 lg:px-6">
       <div className="flex items-center gap-4">
         <SidebarTrigger />
         <Logo size="md" />
@@ -72,7 +72,7 @@ export const Navbar = ({ user }: NavbarProps) => {
         {/* Language Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+            <Button variant="ghost" size="sm" className="gap-2 text-accent-foreground/70 hover:text-accent-foreground hover:bg-accent-foreground/10">
               <Globe className="w-4 h-4" />
               <span className="hidden sm:inline">{languageInfo.nativeName}</span>
               <ChevronDown className="w-3 h-3" />
@@ -100,14 +100,14 @@ export const Navbar = ({ user }: NavbarProps) => {
         {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2 pl-2">
-              <Avatar className="w-9 h-9 bg-gradient-to-br from-primary to-accent">
-                <AvatarFallback className="bg-transparent text-primary-foreground text-sm font-bold">
+            <Button variant="ghost" size="sm" className="gap-2 pl-2 hover:bg-accent-foreground/10">
+              <Avatar className="w-9 h-9 bg-accent-foreground/20 border border-accent-foreground/30">
+                <AvatarFallback className="bg-transparent text-accent-foreground text-sm font-bold">
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden sm:inline font-medium text-foreground">{displayName}</span>
-              <ChevronDown className="w-3 h-3 text-muted-foreground" />
+              <span className="hidden sm:inline font-medium text-accent-foreground">{displayName}</span>
+              <ChevronDown className="w-3 h-3 text-accent-foreground/70" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-card border-border z-50">
