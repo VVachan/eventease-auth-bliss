@@ -239,7 +239,7 @@ export const CreateEventForm = ({ onSubmit, onSuccess }: CreateEventFormProps) =
             name="budget"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Budget ($)</FormLabel>
+                <FormLabel>Budget (₹)</FormLabel>
                 <FormControl>
                   <Input type="number" min="0" step="0.01" placeholder="5000" {...field} />
                 </FormControl>
@@ -253,7 +253,7 @@ export const CreateEventForm = ({ onSubmit, onSuccess }: CreateEventFormProps) =
             name="max_attendees"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Max Attendees</FormLabel>
+                <FormLabel>Capacity</FormLabel>
                 <FormControl>
                   <Input type="number" min="1" placeholder="100" {...field} />
                 </FormControl>
