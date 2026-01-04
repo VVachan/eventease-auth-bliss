@@ -51,7 +51,7 @@ export const Navbar = ({ user }: NavbarProps) => {
   };
 
   return (
-    <header className="h-16 border-b border-border bg-card flex items-center justify-between px-4 lg:px-6">
+    <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-4 lg:px-6">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="lg:hidden" />
         <div className="hidden lg:block">
@@ -63,7 +63,7 @@ export const Navbar = ({ user }: NavbarProps) => {
         {/* Language Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2">
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
               <Globe className="w-4 h-4" />
               <span className="hidden sm:inline">{language}</span>
               <ChevronDown className="w-3 h-3" />
@@ -91,26 +91,26 @@ export const Navbar = ({ user }: NavbarProps) => {
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden sm:inline font-medium">{displayName}</span>
-              <ChevronDown className="w-3 h-3" />
+              <span className="hidden sm:inline font-medium text-foreground">{displayName}</span>
+              <ChevronDown className="w-3 h-3 text-muted-foreground" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-card border-border z-50">
             <div className="px-3 py-2">
-              <p className="text-sm font-medium">{displayName}</p>
+              <p className="text-sm font-medium text-foreground">{displayName}</p>
               <p className="text-xs text-muted-foreground truncate">{user.email}</p>
             </div>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate("/settings")}>
+            <DropdownMenuSeparator className="bg-border" />
+            <DropdownMenuItem onClick={() => navigate("/settings")} className="cursor-pointer">
               <User className="w-4 h-4 mr-2" />
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate("/settings")}>
+            <DropdownMenuItem onClick={() => navigate("/settings")} className="cursor-pointer">
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
+            <DropdownMenuSeparator className="bg-border" />
+            <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive cursor-pointer">
               <LogOut className="w-4 h-4 mr-2" />
               Sign out
             </DropdownMenuItem>
