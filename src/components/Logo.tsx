@@ -27,7 +27,7 @@ export const Logo = ({ size = "md", variant = "default" }: LogoProps) => {
           <Calendar className={`${size === "lg" ? "w-7 h-7" : size === "md" ? "w-5 h-5" : "w-4 h-4"} ${isLight ? "text-primary-foreground" : "text-primary"}`} />
         </div>
         <Star 
-          className={`absolute -top-1 -right-1 ${size === "lg" ? "w-5 h-5" : size === "md" ? "w-4 h-4" : "w-3 h-3"} text-accent fill-current`} 
+          className={`absolute -top-1 -right-1 ${size === "lg" ? "w-5 h-5" : size === "md" ? "w-4 h-4" : "w-3 h-3"} text-[hsl(45,90%,55%)] fill-current`} 
         />
       </div>
       <span className={`font-display font-bold ${textSizes[size]} ${isLight ? "text-primary-foreground" : "text-foreground"}`}>
