@@ -12,21 +12,24 @@ const Auth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Handle auth state changes and OAuth callbacks
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (session?.user) {
+        if (event === "SIGNED_IN" && session?.user) {
+          // OAuth callback or successful sign in
           navigate("/", { replace: true });
         }
       }
     );
 
+    // Check if already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         navigate("/", { replace: true });
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, [navigate]);
 
   return (
