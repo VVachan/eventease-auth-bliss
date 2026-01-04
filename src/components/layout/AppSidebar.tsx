@@ -14,6 +14,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/Logo";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Sidebar,
   SidebarContent,
@@ -28,23 +29,24 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import type { TranslationKey } from "@/lib/translations";
 
-const mainMenuItems = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Create Event", url: "/create-event", icon: PlusCircle },
-  { title: "Browse Events", url: "/browse-events", icon: Search },
-  { title: "My Registrations", url: "/registrations", icon: Ticket },
+const mainMenuItems: { titleKey: TranslationKey; url: string; icon: any }[] = [
+  { titleKey: "dashboard", url: "/", icon: LayoutDashboard },
+  { titleKey: "createEvent", url: "/create-event", icon: PlusCircle },
+  { titleKey: "browseEvents", url: "/browse-events", icon: Search },
+  { titleKey: "myRegistrations", url: "/registrations", icon: Ticket },
 ];
 
-const manageMenuItems = [
-  { title: "Vendors", url: "/vendors", icon: Store },
-  { title: "Venues", url: "/venues", icon: MapPin },
+const manageMenuItems: { titleKey: TranslationKey; url: string; icon: any }[] = [
+  { titleKey: "vendors", url: "/vendors", icon: Store },
+  { titleKey: "venues", url: "/venues", icon: MapPin },
 ];
 
-const otherMenuItems = [
-  { title: "Calendar", url: "/calendar", icon: CalendarDays },
-  { title: "Notifications", url: "/notifications", icon: Bell },
-  { title: "Settings", url: "/settings", icon: Settings },
+const otherMenuItems: { titleKey: TranslationKey; url: string; icon: any }[] = [
+  { titleKey: "calendar", url: "/calendar", icon: CalendarDays },
+  { titleKey: "notifications", url: "/notifications", icon: Bell },
+  { titleKey: "settings", url: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
@@ -53,6 +55,7 @@ export function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -73,12 +76,12 @@ export function AppSidebar() {
     }
   };
 
-  const MenuItem = ({ item }: { item: { title: string; url: string; icon: any } }) => (
+  const MenuItem = ({ item }: { item: { titleKey: TranslationKey; url: string; icon: any } }) => (
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
         isActive={isActive(item.url)}
-        tooltip={collapsed ? item.title : undefined}
+        tooltip={collapsed ? t(item.titleKey) : undefined}
       >
         <button
           onClick={() => navigate(item.url)}
@@ -90,7 +93,7 @@ export function AppSidebar() {
           )}
         >
           <item.icon className="w-5 h-5 shrink-0" />
-          {!collapsed && <span className="font-medium">{item.title}</span>}
+          {!collapsed && <span className="font-medium">{t(item.titleKey)}</span>}
         </button>
       </SidebarMenuButton>
     </SidebarMenuItem>
@@ -112,33 +115,33 @@ export function AppSidebar() {
 
       <SidebarContent className="px-3">
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Main</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("main")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainMenuItems.map((item) => (
-                <MenuItem key={item.title} item={item} />
+                <MenuItem key={item.titleKey} item={item} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup className="mt-6">
-          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Manage</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("manage")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {manageMenuItems.map((item) => (
-                <MenuItem key={item.title} item={item} />
+                <MenuItem key={item.titleKey} item={item} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup className="mt-6">
-          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Other</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("other")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {otherMenuItems.map((item) => (
-                <MenuItem key={item.title} item={item} />
+                <MenuItem key={item.titleKey} item={item} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -149,12 +152,12 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              tooltip={collapsed ? "Logout" : undefined}
+              tooltip={collapsed ? t("logout") : undefined}
               onClick={handleSignOut}
               className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-destructive hover:bg-destructive/10 transition-all duration-200"
             >
               <LogOut className="w-5 h-5 shrink-0" />
-              {!collapsed && <span className="font-medium">Logout</span>}
+              {!collapsed && <span className="font-medium">{t("logout")}</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
